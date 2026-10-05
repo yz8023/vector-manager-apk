@@ -61,8 +61,9 @@ Vector 是一个面向现代 Android 的 ART 挂钩框架，以 Zygisk 模块形
 
 - 已 root（Magisk / KernelSU / APatch）
 - 设备上已安装 LSPosed IT（Forinxy）框架，`lspctl` 可执行文件存在（通常在 `/data/adb/ksu/bin/lspctl`、`/data/adb/ap/bin/lspctl` 或框架模块目录下）
+- **必须在 LSPosed 管理器 → 设置中开启「开发者模式」**：`lspctl` 的 `module`/`scope` 命令受该开关门控，未开启时 CLI 会把这些子命令直接移除（报 "Unmatched arguments"）。v1.0.1 起会自动检测此状态并给出指引
 - App 通过持久 `su` 会话执行 `lspctl ... --json` 并解析其单行 JSON 输出
 
-安装：直接安装 `scopelens-v1.0.apk`，首次运行授予 root 权限。
+安装：直接安装 `scopelens-v1.0.1.apk`，首次运行授予 root 权限。
 
 > 说明：`lspctl` 是框架提供的官方调试 CLI，其输出为 `{"ok":true,"command":...,"data":{...}}` 结构。ScopeLens 依赖该结构；若框架版本变化导致输出格式调整，可在 App 的「Diag」页查看原始 status 输出协助排查。
