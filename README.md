@@ -45,3 +45,24 @@ Vector 是一个面向现代 Android 的 ART 挂钩框架，以 Zygisk 模块形
 
 - 本仓库发布的构建使用调试证书签名，仅供体验与测试
 - 仓库内不含源码；如需构建，请参考上游主仓库
+
+## ScopeLens：给 Forinxy LSPosed IT 用的反向视图 App
+
+如果你用的是 **Forinxy 的 LSPosed IT 框架**且不想换框架，可以安装 `scopelens-v1.0.apk`。它不改动框架，而是以 root 调用框架**自带的 `lspctl` CLI** 读取和写入作用域，因此改动经由 daemon 自身生效，天然与框架兼容。
+
+功能：
+
+- **应用为中心的反向视图**：按应用浏览「哪些模块作用于它 / 哪些模块在声明中推荐作用于它」
+- **一键添加 / 移除作用域**：调用 `lspctl scope add/remove`，即时生效（部分系统组件变更会提示重启）
+- **模块视图**：查看每个模块的当前作用域与声明作用域
+- **诊断**：显示 lspctl 路径、daemon 版本、shell uid、daemon status
+
+依赖与前提：
+
+- 已 root（Magisk / KernelSU / APatch）
+- 设备上已安装 LSPosed IT（Forinxy）框架，`lspctl` 可执行文件存在（通常在 `/data/adb/ksu/bin/lspctl`、`/data/adb/ap/bin/lspctl` 或框架模块目录下）
+- App 通过持久 `su` 会话执行 `lspctl ... --json` 并解析其单行 JSON 输出
+
+安装：直接安装 `scopelens-v1.0.apk`，首次运行授予 root 权限。
+
+> 说明：`lspctl` 是框架提供的官方调试 CLI，其输出为 `{"ok":true,"command":...,"data":{...}}` 结构。ScopeLens 依赖该结构；若框架版本变化导致输出格式调整，可在 App 的「Diag」页查看原始 status 输出协助排查。
