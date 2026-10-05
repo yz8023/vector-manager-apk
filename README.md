@@ -1,29 +1,47 @@
 # Vector 管理器 APK 发布仓库
 
-Vector Framework（LSPosed 延续分支，由 JingMatrix 维护）的管理器预编译安装包发布仓库。本仓库仅提供可直接安装的 APK，源码位于上游主仓库。
+Vector Framework（LSPosed 延续分支，由 JingMatrix 维护）的管理器与配套框架包发布仓库。
 
 ## 简介
 
-Vector 是一个面向现代 Android 的 ART 挂钩框架，以 Zygisk 模块形式运行，基于 LSPlant 构建，与原版 Xposed API 保持一致。管理器 App（本仓库发布的 APK）负责：
+Vector 是一个面向现代 Android 的 ART 挂钩框架，以 Zygisk 模块形式运行，基于 LSPlant 构建，与原版 Xposed API 保持一致。管理器 App 负责：
 
 - 查看与管理已启用的 Xposed 模块（启用 / 禁用、批量操作、备份与恢复）
 - 编辑模块作用域：勾选模块作用于哪些应用
-- **按应用反向查看**：以应用为中心浏览"哪些模块作用于它 / 哪些模块声明推荐作用于它"，支持一键把应用加入推荐模块的作用域
+- **按应用反向查看**：以应用为中心浏览「哪些模块作用于它 / 哪些模块声明推荐作用于它」，支持一键把应用加入推荐模块的作用域
 - 查看框架状态、日志与崩溃报告
+
+## 为什么必须用配套的框架包
+
+框架在构建时会把**管理器 APK 的签名证书**编译进 daemon，运行时逐字节校验管理器签名（`InstallerVerifier`）。因此：
+
+- 刷别人构建的 LSPosed 框架（如 Forinxy IT、官方 LSPosed 等），再装本仓库的管理器：签名校验不通过，daemon 不认可该管理器，最终会使用框架内置的旧管理器 —— 表现就是「能读到框架和模块，但没有反向视图」。
+- 想换包名绕过是无效的：校验的是签名，签名不同一律拒绝。
+
+**结论：框架与管理器必须出自同一次构建。** 下载本仓库同一 Release 里的框架 zip 与管理器 APK 配套使用即可。
+
+## 最新版本
+
+前往 [Releases](https://github.com/yz8023/vector-manager-apk/releases) 下载：
+
+- `Vector-vcanary-3112-1-Release.zip`：框架模块，刷入 Magisk / KernelSU
+- `vector-manager-v1.1.apk`：管理器（含反向视图）
+
+## 刷入步骤
+
+1. 在 Magisk / KernelSU 中卸载现有 LSPosed 模块（Forinxy IT 或其他分支，二者都 hook zygote，不能共存）
+2. 刷入 `Vector-vcanary-3112-1-Release.zip`，重启
+3. 安装 `vector-manager-v1.1.apk`（或重启后从框架通知进入并安装内置管理器）
+4. 正常的 LSPosed / Xposed 模块全部可识别；模块页顶部切换「模块 / 应用」即可使用反向视图
+
+原有的模块启用状态与作用域配置保存在 `/data/adb/lspd/`，沿用概率高。
 
 ## 安装要求
 
-1. 已 root 的设备（Magisk / KernelSU），并启用 Zygisk（推荐配合 [NeoZygisk](https://github.com/JingMatrix/NeoZygisk)）
-2. 已刷入 Vector 框架模块（[Releases](https://github.com/JingMatrix/Vector/releases)）
-3. 支持Android 8.1 ～ Android 17 Beta
+- 已 root 的设备（Magisk / KernelSU），并启用 Zygisk（推荐配合 [NeoZygisk](https://github.com/JingMatrix/NeoZygisk)）
+- 支持 Android 8.1 ～ Android 17 Beta
 
-## 使用说明
+## 说明
 
-1. 刷入框架模块并重启后，从系统通知进入管理器设置
-2. 本仓库 APK 为管理器本体，安装后即可使用
-3. 模块页顶部可在「模块 / 应用」两个视图间切换：应用视图把被模块作用的应用排在前面，点击应用可查看作用于它的模块
-
-## 注意事项
-
-- 本仓库发布的 APK 使用 debug 签名，仅供体验与测试
-- 仓库内不含任何源码；如需构建，请参考上游主仓库
+- 本仓库发布的构建使用调试证书签名，仅供体验与测试
+- 仓库内不含源码；如需构建，请参考上游主仓库
