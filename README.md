@@ -48,25 +48,26 @@ Vector 是一个面向现代 Android 的 ART 挂钩框架，以 Zygisk 模块形
 
 ## ScopeLens：给 Forinxy LSPosed IT 用的反向视图 App
 
-如果你用的是 **Forinxy 的 LSPosed IT 框架**且不想换框架，可以安装 `scopelens-v1.0.3.apk`。它不改动框架，而是以 root 身份通过框架 daemon 的 **binder 通道**（`serial` 中继 → `ILSPManagerService`）读写作用域——这是 LSPosed Manager 管理器 App 自己使用的同一条通道，因此改动经由 daemon 自身生效，天然与框架兼容。
+如果你用的是 **Forinxy 的 LSPosed IT 框架**且不想换框架，可以安装 `scopelens-v1.0.4.apk`。它不改动框架，而是以 root 身份与框架 daemon 通信读写作用域——改动经由 daemon 自身生效，天然与框架兼容。
 
 功能：
 
 - **应用为中心的反向视图**：按应用浏览「哪些模块作用于它 / 哪些模块在声明中推荐作用于它」
-- **一键添加 / 移除作用域**：走 daemon 的 scope 变更接口（transact 66），即时生效
+- **一键添加 / 移除作用域**：走 daemon 的 scope 变更接口，即时生效
 - **模块视图**：查看每个模块的当前作用域与声明作用域
-- **诊断**：显示通道（daemon binder）、daemon 版本、shell uid
+- **诊断与探针**：显示通道、daemon 版本、shell uid；「Probe」按钮直连 daemon 的 monitor socket（`/data/adb/lspd/monitor`），只读拉取 daemon 内存中的实时作用域映射，结果可复制
 - **开发者模式一键开启**：检测到未开启时提供一键自动开启（root 直写 daemon 设置，立即生效）
 
 依赖与前提：
 
 - 已 root（Magisk / KernelSU / APatch）
 - 设备上已安装 LSPosed IT（Forinxy）框架且 daemon 运行中
-- App 通过持久 `su` 会话启动一次性的 `app_process` worker（ScopeBot），由它在 root 环境里完成全部 binder 调用并回传 JSON 结果
+- App 通过持久 `su` 会话启动一次性的 `app_process` worker（ScopeBot），由它在 root 环境里完成全部通信并回传 JSON 结果
 
-安装：直接安装 `scopelens-v1.0.3.apk`（覆盖旧版本），首次运行授予 root 权限。
+安装：直接安装 `scopelens-v1.0.4.apk`（覆盖旧版本），首次运行授予 root 权限。
 
 > 版本历史：
+> - v1.0.4：新增 monitor socket 探针。实测 daemon 的 `serial` 中继返回的是 `ILSPSystemServerService`（应用服务桥），并非管理器服务，binder 链路上拿不到管理器写接口；v1.0.4 改为直连 daemon 的 monitor socket（抽象 socket，名字写在 `/data/adb/lspd/monitor`），用其 op 6（开发者模式查询）与 op 4（实时作用域映射，daemon 侧无调用方校验）只读拉取「应用 → 模块」反向视图。管理器注册实验（op 2）默认关闭，需在探针结果页手动触发。
 > - v1.0.3：数据面从 `lspctl` CLI 切换为 daemon binder 通道。CLI 路径受 "仅允许来自 ADB 会话" 的调用来源校验（`CliOriginVerifier`）限制，App 起的 root shell 无法通过；binder 路径与 LSPosed Manager 相同，不受该限制。
 > - v1.0.2：一键自动开启开发者模式（root 直写 daemon 配置）。
 > - v1.0：基于 `lspctl` CLI 的首个版本。
