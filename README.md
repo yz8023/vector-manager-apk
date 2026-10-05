@@ -48,22 +48,25 @@ Vector 是一个面向现代 Android 的 ART 挂钩框架，以 Zygisk 模块形
 
 ## ScopeLens：给 Forinxy LSPosed IT 用的反向视图 App
 
-如果你用的是 **Forinxy 的 LSPosed IT 框架**且不想换框架，可以安装 `scopelens-v1.0.apk`。它不改动框架，而是以 root 调用框架**自带的 `lspctl` CLI** 读取和写入作用域，因此改动经由 daemon 自身生效，天然与框架兼容。
+如果你用的是 **Forinxy 的 LSPosed IT 框架**且不想换框架，可以安装 `scopelens-v1.0.3.apk`。它不改动框架，而是以 root 身份通过框架 daemon 的 **binder 通道**（`serial` 中继 → `ILSPManagerService`）读写作用域——这是 LSPosed Manager 管理器 App 自己使用的同一条通道，因此改动经由 daemon 自身生效，天然与框架兼容。
 
 功能：
 
 - **应用为中心的反向视图**：按应用浏览「哪些模块作用于它 / 哪些模块在声明中推荐作用于它」
-- **一键添加 / 移除作用域**：调用 `lspctl scope add/remove`，即时生效（部分系统组件变更会提示重启）
+- **一键添加 / 移除作用域**：走 daemon 的 scope 变更接口（transact 66），即时生效
 - **模块视图**：查看每个模块的当前作用域与声明作用域
-- **诊断**：显示 lspctl 路径、daemon 版本、shell uid、daemon status
+- **诊断**：显示通道（daemon binder）、daemon 版本、shell uid
+- **开发者模式一键开启**：检测到未开启时提供一键自动开启（root 直写 daemon 设置，立即生效）
 
 依赖与前提：
 
 - 已 root（Magisk / KernelSU / APatch）
-- 设备上已安装 LSPosed IT（Forinxy）框架，`lspctl` 可执行文件存在（通常在 `/data/adb/ksu/bin/lspctl`、`/data/adb/ap/bin/lspctl` 或框架模块目录下）
-- **需要开启框架的「开发者模式」**：`lspctl` 的 `module`/`scope` 命令受该开关门控，未开启时 CLI 会把这些子命令直接移除（报 "Unmatched arguments"）。v1.0.2 起启动检测到未开启时提供一键自动开启（root 直写 daemon 设置，立即生效），也可以在 LSPosed 管理器 → 设置 → Debugging → Developer mode 手动开启
-- App 通过持久 `su` 会话执行 `lspctl ... --json` 并解析其单行 JSON 输出
+- 设备上已安装 LSPosed IT（Forinxy）框架且 daemon 运行中
+- App 通过持久 `su` 会话启动一次性的 `app_process` worker（ScopeBot），由它在 root 环境里完成全部 binder 调用并回传 JSON 结果
 
-安装：直接安装 `scopelens-v1.0.2.apk`，首次运行授予 root 权限。
+安装：直接安装 `scopelens-v1.0.3.apk`（覆盖旧版本），首次运行授予 root 权限。
 
-> 说明：`lspctl` 是框架提供的官方调试 CLI，其输出为 `{"ok":true,"command":...,"data":{...}}` 结构。ScopeLens 依赖该结构；若框架版本变化导致输出格式调整，可在 App 的「Diag」页查看原始 status 输出协助排查。
+> 版本历史：
+> - v1.0.3：数据面从 `lspctl` CLI 切换为 daemon binder 通道。CLI 路径受 "仅允许来自 ADB 会话" 的调用来源校验（`CliOriginVerifier`）限制，App 起的 root shell 无法通过；binder 路径与 LSPosed Manager 相同，不受该限制。
+> - v1.0.2：一键自动开启开发者模式（root 直写 daemon 配置）。
+> - v1.0：基于 `lspctl` CLI 的首个版本。
