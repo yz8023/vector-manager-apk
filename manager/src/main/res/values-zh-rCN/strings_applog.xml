@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 管理器自身日志界面与作用域拒绝对话框的文案。 -->
+<resources>
+
+    <!-- 管理器自身日志 -->
+    <string name="applog_title">应用日志</string>
+    <string name="applog_search_hint">搜索日志</string>
+    <string name="applog_filter_all">全部</string>
+    <string name="applog_filter_problems">问题</string>
+    <string name="applog_filter_scope">作用域</string>
+    <string name="applog_empty">还没有日志</string>
+    <string name="applog_copy">复制日志</string>
+    <string name="applog_share">分享日志</string>
+    <string name="applog_clear">清空日志</string>
+    <string name="applog_clear_body">将丢弃内存与磁盘上的全部日志。守护进程的日志不受影响。</string>
+    <string name="applog_cancel">取消</string>
+
+    <!-- 作用域写入被拒绝的原因 -->
+    <string name="scope_refused_title">作用域被拒绝</string>
+    <string name="scope_refused_static_body">该模块在 APK 中固定了自己的作用域（staticScope，声明 %1$d 个应用），框架会拒绝该列表之外的所有目标。</string>
+    <string name="scope_refused_plain_body">框架拒绝了这次写入，但没有返回原因。守护进程日志中的记录是唯一线索。</string>
+    <string name="scope_refused_beyond">固定作用域之外的应用：%1$s</string>
+    <string name="scope_refused_daemon_log">守护进程日志摘录：</string>
+    <string name="scope_refused_view_logs">查看日志</string>
+    <string name="scope_refused_close">关闭</string>
+</resources>

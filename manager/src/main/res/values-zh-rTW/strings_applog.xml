@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 管理器自身日誌介面與作用域拒絕對話框的文案。 -->
+<resources>
+
+    <!-- 管理器自身日誌 -->
+    <string name="applog_title">應用日誌</string>
+    <string name="applog_search_hint">搜尋日誌</string>
+    <string name="applog_filter_all">全部</string>
+    <string name="applog_filter_problems">問題</string>
+    <string name="applog_filter_scope">作用域</string>
+    <string name="applog_empty">還沒有日誌</string>
+    <string name="applog_copy">複製日誌</string>
+    <string name="applog_share">分享日誌</string>
+    <string name="applog_clear">清空日誌</string>
+    <string name="applog_clear_body">將丟棄記憶體與磁碟上的全部日誌。守護程序的日誌不受影響。</string>
+    <string name="applog_cancel">取消</string>
+
+    <!-- 作用域寫入被拒絕的原因 -->
+    <string name="scope_refused_title">作用域被拒絕</string>
+    <string name="scope_refused_static_body">該模組在 APK 中固定了自己的作用域（staticScope，宣告 %1$d 個應用），框架會拒絕該清單之外的所有目標。</string>
+    <string name="scope_refused_plain_body">框架拒絕了這次寫入，但沒有回傳原因。守護程序日誌中的記錄是唯一線索。</string>
+    <string name="scope_refused_beyond">固定作用域之外的應用：%1$s</string>
+    <string name="scope_refused_daemon_log">守護程序日誌摘錄：</string>
+    <string name="scope_refused_view_logs">檢視日誌</string>
+    <string name="scope_refused_close">關閉</string>
+</resources>

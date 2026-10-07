@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Strings for the manager's own log screen and for the scope-refusal dialog.
+
+  Their own file, for the same reason the shared Logs screen's strings are: a feature under
+  active development owns its keys without colliding with anyone else's edits. Nothing
+  user-visible may be hard-coded in a composable.
+-->
+<resources>
+
+    <!-- The manager's own log -->
+    <string name="applog_title">App log</string>
+    <string name="applog_search_hint">Search this log</string>
+    <string name="applog_filter_all">All</string>
+    <string name="applog_filter_problems">Problems</string>
+    <string name="applog_filter_scope">Scope</string>
+    <string name="applog_empty">Nothing logged yet</string>
+    <string name="applog_copy">Copy the log</string>
+    <string name="applog_share">Share the log</string>
+    <string name="applog_clear">Clear the log</string>
+    <string name="applog_clear_body">Everything logged so far is dropped, in memory and on disk. The daemon\'s logs are not touched.</string>
+    <string name="applog_cancel">Cancel</string>
+
+    <!-- Why a scope write was refused -->
+    <string name="scope_refused_title">Scope was refused</string>
+    <string name="scope_refused_static_body">This module fixes its own scope in its APK (staticScope, %1$d apps claimed), so the framework refuses every target outside that list.</string>
+    <string name="scope_refused_plain_body">The framework refused this write without naming a reason. The daemon\'s own log line is the only record of why.</string>
+    <string name="scope_refused_beyond">Outside the claimed scope: %1$s</string>
+    <string name="scope_refused_daemon_log">From the daemon\'s log:</string>
+    <string name="scope_refused_view_logs">View the log</string>
+    <string name="scope_refused_close">Close</string>
+</resources>
