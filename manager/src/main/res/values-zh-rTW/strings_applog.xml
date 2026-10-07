@@ -19,8 +19,15 @@
     <string name="scope_refused_title">作用域被拒絕</string>
     <string name="scope_refused_static_body">該模組在 APK 中固定了自己的作用域（staticScope，宣告 %1$d 個應用），框架會拒絕該清單之外的所有目標。</string>
     <string name="scope_refused_plain_body">框架拒絕了這次寫入，但沒有回傳原因。守護程序日誌中的記錄是唯一線索。</string>
+    <string name="scope_refused_static_subset_body">這次寫入並未超出模組宣告的作用域，框架卻仍然拒絕了。守護程序日誌中的記錄（root 可讀時）會寫明底層原因。</string>
     <string name="scope_refused_beyond">固定作用域之外的應用：%1$s</string>
     <string name="scope_refused_daemon_log">守護程序日誌摘錄：</string>
     <string name="scope_refused_view_logs">檢視日誌</string>
     <string name="scope_refused_close">關閉</string>
+
+    <!-- 反向視圖：一個應用，以及作用於它的全部模組 -->
+    <string name="appscopes_title">按應用檢視</string>
+    <string name="appscopes_empty">還沒有模組宣告作用域</string>
+    <string name="appscopes_module_count">%1$d 個模組作用於該應用</string>
+    <string name="appscopes_no_daemon">框架不可達，無法讀取作用域</string>
 </resources>

@@ -36,9 +36,13 @@ internal object ScopeDiagnosis {
         // The pattern is fixed in the daemon; the module package is the only interpolation, and it
         // is a package name — but it still goes through the shell, so it is single-quoted after
         // any single quote is stripped rather than trusted.
+        // The refusal the staticScope check writes is one failure; a write that stayed inside the
+        // claim and still failed comes back as `Failed to set scope` with a stack trace beside it
+        // — the database refusing the write is invisible to the manager otherwise, because the
+        // binder answer is the same bare `false` either way.
         val safe = modulePackage.replace("'", "")
         val shell =
-            "grep -h 'refusing\\|fixes its scope' " +
+            "grep -h 'refusing\\|fixes its scope\\|Failed to set scope\\|Failed to prune' " +
                 "'$LOG_DIR'/modules_*.log '$LOG_DIR'/verbose_*.log " +
                 "'$OLD_LOG_DIR'/modules_*.log '$OLD_LOG_DIR'/verbose_*.log 2>/dev/null " +
                 "| grep '$safe' | tail -n $limit"

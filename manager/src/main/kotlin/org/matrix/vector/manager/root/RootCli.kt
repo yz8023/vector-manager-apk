@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import org.matrix.vector.ipc.ScopeEntry
+import org.matrix.vector.manager.logW
 
 /**
  * Speaks to the Vector daemon through its own root CLI at `/data/adb/lspd/cli`.
@@ -39,7 +40,6 @@ internal class RootCli(private val cliPath: String = "/data/adb/lspd/cli") {
      * discarded so the refusal dialog can quote the daemon instead of guessing.
      */
     @Volatile var lastScopeError: String? = null
-        private set
         private set
 
     /** Values from `status`, kept because several binder calls read one field of it each. */
@@ -143,6 +143,10 @@ internal class RootCli(private val cliPath: String = "/data/adb/lspd/cli") {
             if (response?.success == true) return true
             lastScopeError =
                 response?.error ?: "cli scope set returned no answer (root or daemon absent)"
+            // Into the manager's own log with the scope prefix, so the app log's Scope filter
+            // carries the daemon's answer and the refusal dialog's quote can be checked against
+            // the record rather than trusted from memory.
+            logW("scope: cli set failed for $packageName: $lastScopeError")
             return false
         }
         val current = moduleScope(packageName) ?: return false

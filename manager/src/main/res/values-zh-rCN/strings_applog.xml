@@ -19,8 +19,15 @@
     <string name="scope_refused_title">作用域被拒绝</string>
     <string name="scope_refused_static_body">该模块在 APK 中固定了自己的作用域（staticScope，声明 %1$d 个应用），框架会拒绝该列表之外的所有目标。</string>
     <string name="scope_refused_plain_body">框架拒绝了这次写入，但没有返回原因。守护进程日志中的记录是唯一线索。</string>
+    <string name="scope_refused_static_subset_body">这次写入并未超出模块声明的作用域，框架却仍然拒绝了。守护进程日志中的记录（root 可读时）会写明底层原因。</string>
     <string name="scope_refused_beyond">固定作用域之外的应用：%1$s</string>
     <string name="scope_refused_daemon_log">守护进程日志摘录：</string>
     <string name="scope_refused_view_logs">查看日志</string>
     <string name="scope_refused_close">关闭</string>
+
+    <!-- 反向视图：一个应用，以及作用于它的全部模块 -->
+    <string name="appscopes_title">按应用查看</string>
+    <string name="appscopes_empty">还没有模块声明作用域</string>
+    <string name="appscopes_module_count">%1$d 个模块作用于该应用</string>
+    <string name="appscopes_no_daemon">框架不可达，无法读取作用域</string>
 </resources>

@@ -26,6 +26,7 @@ import org.matrix.vector.manager.data.repository.VectorLogSource
 import org.matrix.vector.manager.data.repository.VectorStoreInstallHost
 import org.matrix.vector.manager.di.ServiceLocator
 import org.matrix.vector.manager.ui.navigation.AppLogs
+import org.matrix.vector.manager.ui.navigation.AppScopes
 import org.matrix.vector.manager.ui.navigation.Canary
 import org.matrix.vector.manager.ui.navigation.CrashTrace
 import org.matrix.vector.manager.ui.navigation.DeepLink
@@ -42,6 +43,7 @@ import org.matrix.vector.manager.ui.navigation.VectorNavPanelStore
 import org.matrix.vector.manager.ui.navigation.Web
 import org.matrix.vector.manager.ui.screens.applog.AppLogFilter
 import org.matrix.vector.manager.ui.screens.applog.AppLogScreen
+import org.matrix.vector.manager.ui.screens.appscopes.AppScopesScreen
 import org.matrix.vector.manager.ui.screens.canary.CanaryScreen
 import org.matrix.vector.manager.ui.screens.home.CrashTraceScreen
 import org.matrix.vector.manager.ui.screens.home.HomeScreen
@@ -218,6 +220,7 @@ private fun EntryProviderScope<NavKey>.registerRoutes(navigator: Navigator) {
         ModulesScreen(
             onModuleClick = { packageName, userId -> navigator.go(Scope(packageName, userId)) },
             onOpenStore = { packageName -> navigator.go(StoreDetail(packageName)) },
+            onOpenAppScopes = { navigator.go(AppScopes) },
         )
     }
     entry<TopLevelRoute.Store> {
@@ -253,6 +256,12 @@ private fun EntryProviderScope<NavKey>.registerRoutes(navigator: Navigator) {
             userId = route.userId,
             onNavigateBack = { navigator.back() },
             onOpenAppLogs = { navigator.go(AppLogs(filter = "SCOPE")) },
+        )
+    }
+    entry<AppScopes> {
+        AppScopesScreen(
+            onNavigateBack = { navigator.back() },
+            onOpenScope = { packageName, userId -> navigator.go(Scope(packageName, userId)) },
         )
     }
     entry<StoreDetail> { route ->

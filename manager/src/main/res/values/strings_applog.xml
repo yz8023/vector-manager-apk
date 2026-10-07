@@ -24,9 +24,16 @@
     <!-- Why a scope write was refused -->
     <string name="scope_refused_title">Scope was refused</string>
     <string name="scope_refused_static_body">This module fixes its own scope in its APK (staticScope, %1$d apps claimed), so the framework refuses every target outside that list.</string>
+    <string name="scope_refused_static_subset_body">The write stayed inside the module\'s claimed scope, yet the framework still refused it. The daemon\'s own log line, when root can read it, names the underlying failure.</string>
     <string name="scope_refused_plain_body">The framework refused this write without naming a reason. The daemon\'s own log line is the only record of why.</string>
     <string name="scope_refused_beyond">Outside the claimed scope: %1$s</string>
     <string name="scope_refused_daemon_log">From the daemon\'s log:</string>
     <string name="scope_refused_view_logs">View the log</string>
     <string name="scope_refused_close">Close</string>
+
+    <!-- The reverse view: one app, and the modules acting on it -->
+    <string name="appscopes_title">By app</string>
+    <string name="appscopes_empty">No module scopes a target yet</string>
+    <string name="appscopes_module_count">%1$d module(s) act on this app</string>
+    <string name="appscopes_no_daemon">The framework is not reachable, so scopes cannot be read</string>
 </resources>

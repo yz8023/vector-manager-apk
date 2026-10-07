@@ -55,7 +55,7 @@ object RootFallback {
      * Read for diagnosis only — the CLI's [RootCli.lastScopeError] carries the daemon's own
      * refusal text, which the binder surface flattens into a bare `false`.
      */
-    fun activeCli(): RootCli? = service?.cli
+    internal fun activeCli(): RootCli? = service?.cli
 
     /**
      * Starts the probe in the background, before anyone needs the answer.

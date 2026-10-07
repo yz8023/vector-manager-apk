@@ -35,7 +35,7 @@ object AppLogStore {
     data class Entry(val timeMs: Long, val priority: Int, val text: String)
 
     private const val MAX_ENTRIES = 4000
-    private const val MAX_FILE_BYTES = 1_000_000L
+    private const val MAX_FILE_BYTES = 1_000_000
     private const val FILE_NAME = "app.log"
 
     private val lock = Any()
@@ -103,13 +103,19 @@ object AppLogStore {
         }
             .getOrNull()
 
+    /** First index of [b] in [bytes] at or after [from]; ByteArray.indexOf lacks a fromIndex form. */
+    private fun indexOfByte(bytes: ByteArray, b: Byte, from: Int): Int {
+        for (i in from until bytes.size) if (bytes[i] == b) return i
+        return -1
+    }
+
     /** Keeps roughly the newest half of the file, then reloads the ring from it. */
     private fun truncateToTail(f: File) {
         val bytes = f.readBytes()
         val keep = bytes.size / 2
         var start = 0
         if (keep in 1 until bytes.size) {
-            start = bytes.indexOf('\n'.code.toByte(), bytes.size - keep)
+            start = indexOfByte(bytes, '\n'.code.toByte(), bytes.size - keep)
             if (start < 0) start = 0 else start += 1
         }
         f.writeBytes(bytes.copyOfRange(start, bytes.size))
@@ -123,7 +129,7 @@ object AppLogStore {
         val from = if (bytes.size > MAX_FILE_BYTES) bytes.size - MAX_FILE_BYTES else 0
         var start = from
         if (from > 0) {
-            val nl = bytes.indexOf('\n'.code.toByte(), from)
+            val nl = indexOfByte(bytes, '\n'.code.toByte(), from)
             if (nl >= 0) start = nl + 1
         }
         String(bytes, start, bytes.size - start, Charsets.UTF_8)

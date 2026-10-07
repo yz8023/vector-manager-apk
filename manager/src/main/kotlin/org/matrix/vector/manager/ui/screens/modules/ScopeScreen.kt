@@ -529,10 +529,16 @@ fun ScopeScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     if (r.staticScope) {
-                        Text(
-                            stringResource(R.string.scope_refused_static_body, r.claimed.size)
-                        )
-                        if (r.beyond.isNotEmpty()) {
+                        if (r.beyond.isEmpty()) {
+                            // The write stayed inside the claim and was still refused, so the
+                            // "outside the claimed scope" story would be a lie. What remains is
+                            // the daemon's own record of why — quoted below, when root can read
+                            // it — and the honest statement that this screen cannot name it.
+                            Text(stringResource(R.string.scope_refused_static_subset_body))
+                        } else {
+                            Text(
+                                stringResource(R.string.scope_refused_static_body, r.claimed.size)
+                            )
                             Text(
                                 stringResource(
                                     R.string.scope_refused_beyond,

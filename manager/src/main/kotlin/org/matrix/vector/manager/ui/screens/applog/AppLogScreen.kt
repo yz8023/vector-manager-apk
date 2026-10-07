@@ -57,7 +57,6 @@ import org.matrix.vector.manager.AppLogStore
 import org.matrix.vector.manager.R
 import org.matrix.vector.manager.logI
 import org.matrix.vector.ui.theme.Mono
-import org.matrix.vector.manager.ui.Mono
 
 /**
  * Which entries the pane shows.
@@ -276,7 +275,7 @@ private fun AppLogRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
                 timeFormat.format(Date(entry.timeMs)),
-                style = MaterialTheme.typography.labelSmall.copy(fontFamily = Mono),
+                style = Mono,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Box(

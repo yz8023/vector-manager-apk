@@ -28,6 +28,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Extension
+import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.SettingsBackupRestore
 import androidx.compose.material.icons.rounded.Block
 import androidx.compose.material.icons.rounded.Check
@@ -153,6 +154,7 @@ class ModulesViewModelFactory : ViewModelProvider.Factory {
 fun ModulesScreen(
     onModuleClick: (packageName: String, userId: Int) -> Unit,
     onOpenStore: (packageName: String) -> Unit,
+    onOpenAppScopes: () -> Unit = {},
     viewModel: ModulesViewModel = viewModel(factory = ModulesViewModelFactory()),
 ) {
     val tabs by viewModel.userModulesTabs.collectAsStateWithLifecycle()
@@ -302,6 +304,7 @@ fun ModulesScreen(
                 total = visible?.modules?.size ?: counts.second,
                 onBackup = { backupLauncher.launch("vector-modules.bak") },
                 onRestore = { restoreLauncher.launch(arrayOf("*/*")) },
+                onOpenAppScopes = onOpenAppScopes,
                 titleOverlay =
                     if (selection.isEmpty()) null
                     else {
@@ -648,6 +651,7 @@ private fun ModulesHeader(
     total: Int,
     onBackup: () -> Unit,
     onRestore: () -> Unit,
+    onOpenAppScopes: () -> Unit = {},
     modifier: Modifier = Modifier,
     titleOverlay: (@Composable () -> Unit)? = null,
     search: @Composable () -> Unit,
@@ -669,6 +673,16 @@ private fun ModulesHeader(
                 Icon(
                     Icons.Rounded.SettingsBackupRestore,
                     contentDescription = stringResource(R.string.modules_restore),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            // The scope table read the other way round: per app, which modules act on it. The
+            // daemon keeps scope per module, so nothing on this screen answers that question —
+            // this is the one entry point for the reverse view.
+            IconButton(onClick = onOpenAppScopes) {
+                Icon(
+                    Icons.Rounded.Apps,
+                    contentDescription = stringResource(R.string.appscopes_title),
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }

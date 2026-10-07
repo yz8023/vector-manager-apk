@@ -77,6 +77,13 @@ sealed interface TopLevelRoute : Route {
  */
 @Serializable data class AppLogs(val filter: String = "all") : Route
 
+/**
+ * The scope table read the other way round: one app at a time, naming every module that acts on
+ * it. Computed in the manager from every module's scope, since the daemon keeps only the
+ * module-to-targets direction.
+ */
+@Serializable data object AppScopes : Route
+
 /** CI builds, as prereleases anyone can download. */
 @Serializable data object Canary : Route
 
