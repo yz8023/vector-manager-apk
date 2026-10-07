@@ -140,7 +140,37 @@ internal class RootCli(private val cliPath: String = "/data/adb/lspd/cli") {
             val targets = scope.joinToString(" ") { "${it.packageName}/${it.userId}" }
             val response =
                 invoke("scope", "set", packageName, *targets.split(" ").toTypedArray())
-            if (response?.success == true) return true
+            if (response?.success == true) {
+                // Verify before believing it. The daemon's CLI reports success whenever the
+                // command ran, whether or not the database write inside it took — the handler
+                // ignores the boolean the database returns — so "success" has reached back as a
+                // lie at least twice: for a module the daemon does not have in its table (the
+                // write dies on the missing row, the success message does not notice), and for
+                // any database failure the CLI swallows the same way. Both read back as the old
+                // scope, so the answer is to read back: what the daemon holds now is compared
+                // against what was asked, and a mismatch is a refusal like any other.
+                val onRecord = moduleScope(packageName)
+                if (onRecord == null) {
+                    lastScopeError =
+                        "the daemon answered success, but it does not have $packageName in " +
+                            "its module table at all — the write never landed"
+                    logW("scope: write to $packageName did not land: $lastScopeError")
+                    return false
+                }
+                val recorded = onRecord.map { "${it.packageName}/${it.userId}" }.toSet()
+                val wanted =
+                    scope.map {
+                        "${it.packageName}/${if (it.packageName == "system") 0 else it.userId}"
+                    }.toSet()
+                if (recorded != wanted) {
+                    lastScopeError =
+                        "the daemon answered success, but the scope on record is: " +
+                            (if (recorded.isEmpty()) "(empty)" else recorded.sorted().joinToString())
+                    logW("scope: write to $packageName did not land: $lastScopeError")
+                    return false
+                }
+                return true
+            }
             lastScopeError =
                 response?.error ?: "cli scope set returned no answer (root or daemon absent)"
             // Into the manager's own log with the scope prefix, so the app log's Scope filter

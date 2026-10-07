@@ -27,7 +27,12 @@
 
     <!-- 反向视图：一个应用，以及作用于它的全部模块 -->
     <string name="appscopes_title">按应用查看</string>
+    <string name="appscopes_search_hint">搜索应用或模块</string>
+    <string name="appscopes_reading">正在读取模块作用域…</string>
+    <string name="appscopes_summary">%1$d 个应用 · 已读取 %2$d 个模块</string>
+    <string name="appscopes_summary_unreadable">%1$d 个应用 · 已读 %2$d 个模块，%3$d 个不可读</string>
     <string name="appscopes_empty">还没有模块声明作用域</string>
-    <string name="appscopes_module_count">%1$d 个模块作用于该应用</string>
     <string name="appscopes_no_daemon">框架不可达，无法读取作用域</string>
+    <string name="appscopes_refresh">重新读取作用域</string>
+    <string name="appscopes_sheet_title">作用于 %1$s 的模块</string>
 </resources>

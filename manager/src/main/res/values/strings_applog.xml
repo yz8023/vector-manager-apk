@@ -33,7 +33,12 @@
 
     <!-- The reverse view: one app, and the modules acting on it -->
     <string name="appscopes_title">By app</string>
+    <string name="appscopes_search_hint">Search apps or modules</string>
+    <string name="appscopes_reading">Reading module scopes\u2026</string>
+    <string name="appscopes_summary">%1$d app(s) \u00b7 read from %2$d module(s)</string>
+    <string name="appscopes_summary_unreadable">%1$d app(s) \u00b7 %2$d module(s) read, %3$d unreadable</string>
     <string name="appscopes_empty">No module scopes a target yet</string>
-    <string name="appscopes_module_count">%1$d module(s) act on this app</string>
     <string name="appscopes_no_daemon">The framework is not reachable, so scopes cannot be read</string>
+    <string name="appscopes_refresh">Read the scopes again</string>
+    <string name="appscopes_sheet_title">Modules acting on %1$s</string>
 </resources>

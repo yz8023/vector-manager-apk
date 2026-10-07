@@ -27,7 +27,12 @@
 
     <!-- 反向視圖：一個應用，以及作用於它的全部模組 -->
     <string name="appscopes_title">按應用檢視</string>
+    <string name="appscopes_search_hint">搜尋應用或模組</string>
+    <string name="appscopes_reading">正在讀取模組作用域…</string>
+    <string name="appscopes_summary">%1$d 個應用 · 已讀取 %2$d 個模組</string>
+    <string name="appscopes_summary_unreadable">%1$d 個應用 · 已讀 %2$d 個模組，%3$d 個不可讀</string>
     <string name="appscopes_empty">還沒有模組宣告作用域</string>
-    <string name="appscopes_module_count">%1$d 個模組作用於該應用</string>
     <string name="appscopes_no_daemon">框架不可達，無法讀取作用域</string>
+    <string name="appscopes_refresh">重新讀取作用域</string>
+    <string name="appscopes_sheet_title">作用於 %1$s 的模組</string>
 </resources>
